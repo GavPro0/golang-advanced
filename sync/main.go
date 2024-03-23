@@ -10,7 +10,7 @@ var (
 )
 
 // func Deposit(amount int, wg *sync.WaitGroup) {
-func Deposit(amount int, wg *sync.WaitGroup, lock *sync.Mutex) {
+func Deposit(amount int, wg *sync.WaitGroup, lock *sync.RWMutex) {
 	defer wg.Done()
 
 	lock.Lock()
@@ -19,14 +19,19 @@ func Deposit(amount int, wg *sync.WaitGroup, lock *sync.Mutex) {
 	lock.Unlock()
 }
 
-func Balance() int {
+func Balance(lock *sync.RWMutex) int {
+	lock.RLock()
 	b := balance
+	lock.RLock()
 	return b
 }
 
+// 1 Deposit() -> Escribiendo (Race Condition).
+// N Balance() -> Leer.
+
 func main() {
 	var wg sync.WaitGroup
-	var lock sync.Mutex
+	var lock sync.RWMutex
 
 	for i := 1; i <= 5; i++ {
 		wg.Add(1)
@@ -35,5 +40,5 @@ func main() {
 	}
 
 	wg.Wait()
-	fmt.Println(Balance())
+	fmt.Println(Balance(&lock))
 }
