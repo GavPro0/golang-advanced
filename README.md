@@ -1,4 +1,4 @@
-# golang-advanced [design_patterns]
+# golang-advanced [11-s]
 
 ## Simple Design Patterns Tests
 
