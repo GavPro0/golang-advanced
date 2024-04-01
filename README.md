@@ -1,6 +1,6 @@
 # golang-advanced [design_patterns]
 
-## Simnple Design Patterns Tests
+## Simple Design Patterns Tests
 
 ```sh
 # Test Factory.
